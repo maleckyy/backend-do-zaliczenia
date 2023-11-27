@@ -7,36 +7,31 @@ const jwt = require("jsonwebtoken");
 // REJSTRACJA
 
 router.post("/signup", (req, res, next) => {
-  // sprawdzic czy juz taki uzytkownik nie istnieje
-  // TASK sprawdz czy istanieje taki ziomke
-  // przez email
-  // if(!email){
-  //     wykonuujemy to
-  // }esle{
-  //     nuc
-  // }
+  User.findOne({ email: req.body.email })
+  .then((foundUser) => {
+    if (foundUser) {
+      res.status(201).json({wiadomosc:"Ten użytkownik już istnieje"});
+    } else {
+      bcrypt.hash(req.body.password, 10).then((hash) => {
+        const user = new User({
+          email: req.body.email,
+          password: hash,
+        });
+        user.save().then(()=> {
+            return ( res.status(201).json({wiadomosc:"Użytkownik zarejestrowany"}))
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).json("Błąd serwera");
+        });
+      });
+    }
+  })
 
-  // _id : 6564ea063efccbe586fd2758
-  // email : "user1"
-  // __v
-  // 0
 
-  bcrypt.hash(req.body.password, 10).then((hash) => {
-    const user = new User({
-      email: req.body.email,
-      password: hash,
-    });
-    user
-      .save()
-      .then(() => {
-        return res
-          .status(201)
-          .json({ wiadomosc: "Poprawnie dodano uzytkownika" });
-      })
-      .catch((err) => res.status(500).json(err));
-  });
 });
 
+// LOGOWANIE
 router.post("/login", (req, res, next) => {
   User.findOne({ email: req.body.email }).then((user) => {
     if (!user) {
@@ -56,7 +51,5 @@ router.post("/login", (req, res, next) => {
     });
   });
 });
-
-// LOGOWANIE
 
 module.exports = router;
