@@ -18,10 +18,10 @@ router.post("/new", (req, res) => {
     price: req.body.price,
     created: new Date().toLocaleDateString(),
   });
+
   newExpense.save();
   res.status(201).json({ data: newExpense });
 });
-
 // metoda get do edytowania
 router.get("/edit/:id", async (req, res) => {
   const id = req.params.id;
@@ -32,5 +32,11 @@ router.get("/edit/:id", async (req, res) => {
   expense.save();
   res.status(201).json({ wiadomosc: `Zmieniono wydatek o id ${id}` });
 });
-//
+//metoda delete do usuwania prze id
+router.delete("/delete/:id", async(req,res)=>{
+  const id = req.params.id
+  const result = await Expenses.deleteOne({_id: id})
+    res.status(201).json({ wiadomosc: "expense deleted", result})
+})
+
 module.exports = router;
