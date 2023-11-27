@@ -12,6 +12,7 @@ mongoose.connect(
     process.env.DB_PASSWORD +
     "@cluster0.0gkqsve.mongodb.net/?retryWrites=true&w=majority"
 );
+// mongodb+srv://admin:admin@cluster0.0gkqsve.mongodb.net/
 
 // instancja expresa
 const app = express();
@@ -25,10 +26,10 @@ app.use(bodyParser.json());
 
 // routy
 // const userRoutes = require("./api/routes/user");
-// const expenseRoutes = require("./api/routes/expense");
+const expenseRoutes = require("./api/routes/expense");
 
 // app.use("/user", userRoutes);
-// app.use("/expenses", expenseRoutes);
+app.use("/expenses", expenseRoutes);
 app.get("/", (req, res, next) => {
   res.status(201).json({ wiadomosc: "działa witam" });
 });
