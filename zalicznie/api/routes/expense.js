@@ -16,10 +16,20 @@ router.post("/new", (req, res) => {
     created: new Date().toLocaleDateString(),
   });
 
+
   newExpense.save();
   res.json(newExpense);
   //
 });
+
+
+//metoda delete do usuwania prze id
+router.delete("/delete/:id", async(req,res)=>{
+  const id = req.params.id
+  const result = await Expenses.deleteOne({_id: id})
+    res.status(201).json({ wiadomosc: "expense deleted", result})
+
+})
 
 //
 module.exports = router;
