@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Expenses = require("../models/expense");
+const checkAuth = require("../middleware/checkAuth");
 //
 // metoda get - pobranie wszystkich wydatków
 router.get("/", (req, res) => {
@@ -12,7 +13,7 @@ router.get("/", (req, res) => {
 // {title: String, price: Number, created: Date }
 //
 // metoda get - dodanie nowego dodatku do bazy danych
-router.post("/new", (req, res) => {
+router.post("/new", checkAuth, (req, res) => {
   const newExpense = new Expenses({
     title: req.body.title,
     price: req.body.price,
@@ -33,10 +34,10 @@ router.get("/edit/:id", async (req, res) => {
   res.status(201).json({ wiadomosc: `Zmieniono wydatek o id ${id}` });
 });
 //metoda delete do usuwania prze id
-router.delete("/delete/:id", async(req,res)=>{
-  const id = req.params.id
-  const result = await Expenses.deleteOne({_id: id})
-    res.status(201).json({ wiadomosc: "expense deleted", result})
-})
+router.delete("/delete/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await Expenses.deleteOne({ _id: id });
+  res.status(201).json({ wiadomosc: "expense deleted", result });
+});
 
 module.exports = router;

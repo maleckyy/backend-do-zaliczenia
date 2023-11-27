@@ -25,10 +25,10 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
 // routy
-// const userRoutes = require("./api/routes/user");
+const userRoutes = require("./api/routes/user");
 const expenseRoutes = require("./api/routes/expense");
 
-// app.use("/user", userRoutes);
+app.use("/user", userRoutes);
 app.use("/expenses", expenseRoutes);
 app.get("/", (req, res, next) => {
   res.status(201).json({ wiadomosc: "działa witam" });
