@@ -2,17 +2,15 @@ const express = require("express");
 const router = express.Router();
 const Expenses = require("../models/expense");
 const checkAuth = require("../middleware/checkAuth");
-//
-// metoda get - pobranie wszystkich wydatków
+
+// POBRANIE WSZYSTKICH WYDATKÓW BEZ AUTORYZACJI
 router.get("/", (req, res) => {
   Expenses.find().then((result) => {
     res.status(201).json({ wiadomosc: "expense get", data: result });
   });
 });
-//
-// {title: String, price: Number, created: Date }
-//
-// metoda get - dodanie nowego dodatku do bazy danych
+
+// DODANIE NOWEGO WYDATKU Z AUTORYZACJĄ body{title,price}, headers: {Authorization: 'Bearer {token}'}
 router.post("/new", checkAuth, (req, res) => {
   const newExpense = new Expenses({
     title: req.body.title,
@@ -23,8 +21,9 @@ router.post("/new", checkAuth, (req, res) => {
   newExpense.save();
   res.status(201).json({ data: newExpense });
 });
-// metoda get do edytowania
-router.get("/edit/:id", async (req, res) => {
+
+// EDYTOWANIE WYDATKU PO ID body{title,price}, headers: {Authorization: 'Bearer {token}'}
+router.get("/edit/:id", checkAuth, async (req, res) => {
   const id = req.params.id;
   const expense = await Expenses.findById({ _id: id });
   expense.title = req.body.title;
@@ -33,8 +32,9 @@ router.get("/edit/:id", async (req, res) => {
   expense.save();
   res.status(201).json({ wiadomosc: `Zmieniono wydatek o id ${id}` });
 });
-//metoda delete do usuwania prze id
-router.delete("/delete/:id", async (req, res) => {
+
+//USUWANIE WYDATKU PO ID {Authorization: 'Bearer {token}'}
+router.delete("/delete/:id", checkAuth, async (req, res) => {
   const id = req.params.id;
   const result = await Expenses.deleteOne({ _id: id });
   res.status(201).json({ wiadomosc: "expense deleted", result });
