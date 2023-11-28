@@ -48,6 +48,7 @@ router.post("/login", (req, res, next) => {
           wiadomosc: "Poprawnie zalogowano",
           token: token,
           userId: user._id,
+          userEmail: user.email,
         });
       } else {
         return res.status(404).json({ wiadomosc: "Błąd autoryzacji" });
