@@ -9,7 +9,7 @@ router.post("/signup", (req, res, next) => {
   User.findOne({ email: req.body.email }).then((foundUser) => {
     // sprawdzenie czy uzytkownik juz istnieje
     if (foundUser) {
-      res.status(201).json({ wiadomosc: "Ten użytkownik już istnieje" });
+      res.status(400).json({ wiadomosc: "Ten użytkownik już istnieje" });
     } else {
       // gdy uzytkownik o takim emailu nie istnieje
       bcrypt.hash(req.body.password, 10).then((hash) => {
