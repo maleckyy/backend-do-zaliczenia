@@ -11,7 +11,7 @@ router.get("/", expenseControllers.get_all_expenses);
 router.post("/new", checkAuth, expenseControllers.add_new_expense);
 
 // EDYTOWANIE WYDATKU PO ID body{title,price}, headers: {Authorization: 'Bearer {token}'}
-router.get("/edit/:id", checkAuth, expenseControllers.edit_expense_by_id);
+router.post("/edit/:id", checkAuth, expenseControllers.edit_expense_by_id);
 
 //USUWANIE WYDATKU PO ID {Authorization: 'Bearer {token}'}
 router.delete(
