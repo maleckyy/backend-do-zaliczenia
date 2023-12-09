@@ -1,21 +1,13 @@
 # backend do projektu zaliczeniowego
 
-
-
 ## Opis
 
 API do projektu zaliczeniowego.
 
 Repozytorium aplikacji: https://github.com/maleckyy/front-back-zaliczenie
 
+## Technologie
 
-
-
-
-
-## Technologie 
-
-* Express.js
-* JWT
-* Bcrypt
-  
+- Express.js
+- JWT
+- Bcrypt
